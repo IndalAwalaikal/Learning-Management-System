@@ -1,0 +1,27 @@
+services:
+  server:
+    image: nexus050106/learning-management-system:server
+    container_name: lms-server
+    ports:
+      - "5000:5000"
+    volumes:
+      - lms-uploads:/app/uploads
+    # Jika menggunakan variabel environment (seperti MongoDB URL dsb), 
+    # jangan lupa menuliskannya di file server.env lalu letakkan sejajar dengan file ini.
+    # env_file:
+    #   - ./server.env
+    restart: unless-stopped
+
+  client:
+    image: nexus050106/learning-management-system:client
+    container_name: lms-client
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+    environment:
+      - VITE_API_URL=http://localhost:5000/api/v1
+    restart: unless-stopped
+
+volumes:
+  lms-uploads:

@@ -12,6 +12,9 @@ COPY . .
 # Create uploads directory
 RUN mkdir -p uploads
 
+# Make entrypoint executable
+RUN chmod +x entrypoint.sh
+
 EXPOSE 5000
 
-CMD ["node", "server.js"]
+CMD ["sh", "entrypoint.sh"]

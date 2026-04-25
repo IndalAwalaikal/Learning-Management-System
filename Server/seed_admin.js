@@ -9,7 +9,7 @@ const createAdmin = async () => {
     try {
         await connectionToDB();
         
-        const adminEmail = process.env.ADMIN_EMAIL || 'admin@gmail.com';
+        const adminEmail = process.env.ADMIN_EMAIL;
 
         // Remove existing if any
         await User.deleteOne({ email: adminEmail });

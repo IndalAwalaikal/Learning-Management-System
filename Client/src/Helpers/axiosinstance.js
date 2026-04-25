@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api/v1";
+// This placeholder will be replaced by the entrypoint script dynamically at runtime when built
+// During local development (npm run dev), it will use the value from .env
+const BASE_URL = import.meta.env.VITE_API_URL || "VITE_API_URL_PLACEHOLDER";
 
 const axiosInstance = axios.create();
 
