@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  --primary: #0056D2; /* Professional Corporate Blue */
+  --primary-hover: #0043A8;
+  --bg-base: #F8FAFC; /* Slate 50 */
+  --bg-surface: #FFFFFF;
+  --text-primary: #0F172A; /* Slate 900 */
+  --text-secondary: #475569; /* Slate 600 */
+  --border: #E2E8F0; /* Slate 200 */
+  --radius: 6px; /* Crisp, professional corners */
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* --- Professional Card --- */
+.pro-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* --- Form Inputs --- */
+.lms-input {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+.lms-input::placeholder {
+  color: #94A3B8; /* Slate 400 */
+}
+.lms-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 86, 210, 0.1);
+}
+
+/* --- Primary Button --- */
+.lms-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.lms-btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+.lms-btn-primary:active {
+  transform: translateY(1px);
+}
+
+/* --- Secondary / Outline Button --- */
+.lms-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.lms-btn-outline:hover {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+}
+
+/* --- Label --- */
+.lms-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+/* --- Link --- */
+.lms-link {
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: none;
+}
+.lms-link:hover {
+  text-decoration: underline;
+}
+
+/* --- Badge --- */
+.lms-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #E0E7FF;
+  color: #3730A3;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* --- Navbar --- */
+.lms-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+/* --- Auth Background --- */
+.auth-bg {
+  min-height: calc(100vh - 64px); /* Minus navbar height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: var(--bg-base);
+}
