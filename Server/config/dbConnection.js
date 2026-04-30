@@ -1,24 +1,33 @@
-import mongoose from "mongoose";
+import { Sequelize } from 'sequelize';
 
 /**
- * @Connects to MongoDB database
+ * @Connects to MySQL database via Sequelize ORM
  */
-mongoose.set('strictQuery', false);
+const sequelize = new Sequelize(
+    process.env.DB_NAME || 'lms_db',
+    process.env.DB_USER || 'lms_user',
+    process.env.DB_PASSWORD || 'lms_password',
+    {
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT || '3306', 10),
+        dialect: 'mysql',
+        logging: false,
+        define: {
+            timestamps: true,
+            underscored: false,
+        },
+    }
+);
 
-const connectionToDB= async ()=>{
-
+const connectionToDB = async () => {
     try {
-        const{ connection}= await mongoose.connect(
-            process.env.MONGODB_URL||`mongodb://localhost:27017/my_database`
-        )
-    
-        if(connection){
-            console.log(`Connected to MongoDB :${connection.host}`);
-        }
-
+        await sequelize.authenticate();
+        console.log(`Connected to MySQL: ${process.env.DB_HOST || 'localhost'}:${process.env.DB_PORT || '3306'}/${process.env.DB_NAME || 'lms_db'}`);
     } catch (e) {
-        console.log(e);
+        console.log('Unable to connect to MySQL database:', e.message);
         process.exit(1);
-    } 
-}
+    }
+};
+
+export { sequelize };
 export default connectionToDB;

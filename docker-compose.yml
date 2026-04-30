@@ -1,6 +1,23 @@
-
-
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: lms-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: lms_root_password
+      MYSQL_DATABASE: lms_db
+      MYSQL_USER: lms_user
+      MYSQL_PASSWORD: lms_password
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   server:
     build:
       context: ./Server
@@ -10,8 +27,13 @@ services:
       - "5000:5000"
     env_file:
       - ./Server/.env
+    environment:
+      - DB_HOST=mysql
     volumes:
       - ./Server/uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
     restart: unless-stopped
 
   client:
@@ -27,3 +49,5 @@ services:
       - VITE_API_URL=http://localhost:5000/api/v1
     restart: unless-stopped
 
+volumes:
+  mysql_data:

@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import User from './models/usermodel.js';
 import connectionToDB from './config/dbConnection.js';
+import { sequelize } from './config/dbConnection.js';
 
 dotenv.config();
 
@@ -12,22 +12,19 @@ const createAdmin = async () => {
         const adminEmail = process.env.ADMIN_EMAIL;
 
         // Remove existing if any
-        await User.deleteOne({ email: adminEmail });
+        await User.destroy({ where: { email: adminEmail } });
 
-        const admin = new User({
+        const admin = await User.create({
             fullName: process.env.ADMIN_FULLNAME,
             email: adminEmail,
             password: process.env.ADMIN_PASSWORD,
             role: 'SUPER_ADMIN',
-            avatar: {
-                public_id: 'dummy',
-                secure_url: 'dummy'
-            }
+            avatar_public_id: 'dummy',
+            avatar_secure_url: 'dummy',
         });
         
-        await admin.save();
         console.log('Admin account created successfully!');
-        await mongoose.disconnect();
+        await sequelize.close();
         process.exit(0);
     } catch (error) {
         console.error('Error creating admin:', error);

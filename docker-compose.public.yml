@@ -1,4 +1,24 @@
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: lms-mysql
+    environment:
+      # Ubah password ini sesuai kebutuhan production Anda
+      MYSQL_ROOT_PASSWORD: lms_root_password
+      MYSQL_DATABASE: lms_db
+      MYSQL_USER: lms_user
+      MYSQL_PASSWORD: lms_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   server:
     image: nexus050106/learning-management-system:server
     container_name: lms-server
@@ -6,10 +26,15 @@ services:
       - "5000:5000"
     volumes:
       - lms-uploads:/app/uploads
-    # Jika menggunakan variabel environment (seperti MongoDB URL dsb), 
-    # jangan lupa menuliskannya di file server.env lalu letakkan sejajar dengan file ini.
-    # env_file:
-    #   - ./server.env
+    # Pastikan server.env berisi variabel untuk koneksi ke MySQL dan lain-lain
+    # Misalnya: DB_HOST=mysql, DB_NAME=lms_db, dll.
+    env_file:
+      - ./server.env
+    environment:
+      - DB_HOST=mysql
+    depends_on:
+      mysql:
+        condition: service_healthy
     restart: unless-stopped
 
   client:
@@ -25,3 +50,4 @@ services:
 
 volumes:
   lms-uploads:
+  mysql_data:

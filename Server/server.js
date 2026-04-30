@@ -1,6 +1,8 @@
 import cloudinary from 'cloudinary';
 
 import connectionToDB from './config/dbConnection.js';
+// Import models index to register associations
+import './models/index.js';
 import app from './app.js';
 
 const PORT= process.env.PORT || 5000;

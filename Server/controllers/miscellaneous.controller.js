@@ -44,7 +44,7 @@ export const contactUs = asyncHandler(async (req, res, next) => {
  * Fetches the statistics of the users (total users and active subscribers).
  */
 export const userStats = asyncHandler(async (req, res, next) => {
-    const allUsersCount = await User.countDocuments();
+    const allUsersCount = await User.count();
   
     res.status(200).json({
       success: true,

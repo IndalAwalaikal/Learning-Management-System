@@ -1,32 +1,51 @@
-import { model, Schema } from 'mongoose';
+import { DataTypes } from 'sequelize';
 
-const contactSchema = new Schema(
-    {
-        name: {
-            type: String,
-            required: [true, 'Name is required'],
-            trim: true,
-            maxLength: [50, 'Name must be less than 50 characters']
-        },
-        email: {
-            type: String,
-            required: [true, 'Email is required'],
-            match: [
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                'Please fill in a valid email address',
-            ],
-        },
-        message: {
-            type: String,
-            required: [true, 'Message is required'],
-            maxLength: [1000, 'Message must be less than 1000 characters']
-        }
+import { sequelize } from '../config/dbConnection.js';
+
+/**
+ * @Contact - Sequelize model for Contact form submissions.
+ */
+const Contact = sequelize.define('Contact', {
+    id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
     },
-    {
-        timestamps: true
-    }
-);
-
-const Contact = model('Contact', contactSchema);
+    name: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        validate: {
+            len: {
+                args: [1, 50],
+                msg: 'Name must be less than 50 characters',
+            },
+        },
+        set(val) {
+            this.setDataValue('name', val ? val.trim() : val);
+        },
+    },
+    email: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+        validate: {
+            isEmail: {
+                msg: 'Please fill in a valid email address',
+            },
+        },
+    },
+    message: {
+        type: DataTypes.STRING(1000),
+        allowNull: false,
+        validate: {
+            len: {
+                args: [1, 1000],
+                msg: 'Message must be less than 1000 characters',
+            },
+        },
+    },
+}, {
+    tableName: 'contacts',
+    timestamps: true,
+});
 
 export default Contact;
